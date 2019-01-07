@@ -32,5 +32,5 @@ Use ASDF:
 
 ``` common-lisp
 CL-USER> (asdf:load-system :csv)
-pT
+T
 ```
