@@ -1,3 +1,5 @@
+[homepage](http://spensertruex.com/CSV.html)
+
 # CSV
 Defines a lisp reader to read is CSV:
 
@@ -18,7 +20,7 @@ This program invokes the lisp reader, making it:
 1) Potentially risky to use if the input it not trusted.
 2) Resource intensive for medium to large files (>5MB).
 
-use with care.
+Use with care.
 
 # Features:
 Supports escaping quotes the CSV way, with quad quotes:
@@ -30,5 +32,5 @@ Use ASDF:
 
 ``` common-lisp
 CL-USER> (asdf:load-system :csv)
-pT
+T
 ```
