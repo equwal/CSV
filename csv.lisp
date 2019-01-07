@@ -7,15 +7,23 @@
 (defun openp (prev curr)
   (declare (ignore curr))
   (char= #\" prev))
+(defun str->list (str)
+  (labels ((inner (str acc len)
+             (if (= 0 len)
+                 (nreverse acc)
+                 (inner (subseq str 1) (cons (elt str 0) acc) (1- len)))))
+    (inner str nil (length str))))
 (let ((in nil)
       (escape nil))
   (setf (fdefinition 'switches)
 	(lambda (prev curr str)
 	  (let ((str (if (array-has-fill-pointer-p str)
                          str
-                         (make-array 1 :fill-pointer 0
-                                       :adjustable t
-                                       :element-type 'character))))
+                         (make-array (length str)
+                                     :fill-pointer 0
+                                     :adjustable t
+                                     :element-type 'character
+                                     :initial-contents (str->list str)))))
             (if (null curr)
 	        (progn (setf in nil escape nil) str)
 	        (if in
@@ -49,7 +57,10 @@
     (dolines (line stream)
       (princ line s)
       (format s "~%"))))
-(defun slurp (path)
-  "Read in a CSV file. Resource intensive, invokes the lisp reader."
+(defun slurp-csv (path)
+  "Read in a CSV file to string. Resource intensive."
   (with-open-file (s path)
     (concatenate 'string "#!" (read-to-string s) "!#")))
+(defun slurp (path)
+  "Read in a CSV file to list. Resource intensive."
+  (read-from-string (slurp-csv path)))
